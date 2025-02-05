@@ -22,10 +22,12 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
-      - name: Copy DAGs to S3
+      - name: Copy DAGs and requirements.txt to S3
         run: |
           # Copy DAGs to S3
           aws s3 cp dags/ s3://${{ vars.MWAA_BUCKET }}/dags/ --recursive
+          # Copy requirements.txt to S3 bucket root
+          aws s3 cp requirements.txt s3://${{ vars.MWAA_BUCKET }}/requirements.txt
 
       - name: Update MWAA Environment
         run: |
