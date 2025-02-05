@@ -2,6 +2,10 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.providers.amazon.aws.operators.s3 import S3ListOperator
 from airflow.operators.python import PythonOperator
+from airflow.models.variable import Variable
+
+# Get the bucket name from the Variable
+hack_the_future_s3_bucket_name = Variable.get('HACK_THE_FUTURE_S3_BUCKET_NAME')
 
 # Default arguments for the DAG
 default_args = {
@@ -19,21 +23,22 @@ dag = DAG(
     default_args=default_args,
     description='A simple DAG to test AWS connectivity by listing S3 buckets',
     schedule_interval=timedelta(days=1),
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2025, 1, 4),
     catchup=False,
     tags=['aws', 'test']
 )
 
-# Task to list S3 buckets
-list_buckets = S3ListOperator(
-    task_id='list_s3_buckets',
+# Task to list contents of a specific S3 bucket
+list_bucket_contents = S3ListOperator(
+    bucket_name=hack_the_future_s3_bucket_name,
+    task_id='list_s3_bucket_contents',
     aws_conn_id='aws_temp_credentials',  # Use a different connection ID for temporary credentials
     dag=dag
 )
 
 # Optional: Add a Python function to process the bucket list
 def print_bucket_list(**context):
-    bucket_list = context['task_instance'].xcom_pull(task_ids='list_s3_buckets')
+    bucket_list = context['task_instance'].xcom_pull(task_ids='list_s3_bucket_contents')
     print("Found the following S3 buckets:")
     for bucket in bucket_list:
         print(f"- {bucket}")
@@ -46,4 +51,4 @@ process_bucket_list = PythonOperator(
 )
 
 # Set task dependencies
-list_buckets >> process_bucket_list 
+list_bucket_contents >> process_bucket_list 
