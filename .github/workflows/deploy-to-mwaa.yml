@@ -33,5 +33,3 @@ jobs:
         run: |
           # Trigger the environment update
           aws mwaa update-environment --name ${{ vars.MWAA_ENV_NAME }}
-          # Wait for the update to complete
-          aws mwaa wait environment-updated --name ${{ vars.MWAA_ENV_NAME }}
