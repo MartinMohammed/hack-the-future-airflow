@@ -15,7 +15,7 @@ dag = DAG(
     default_args=default_args,
     description='A DAG to load S3 data to Snowflake using an AWS Lambda function',
     schedule_interval=timedelta(days=1),
-    start_date=datetime(2025, 1, 4),
+    start_date=datetime(2025, 1, ),
     catchup=False,
 )
 
