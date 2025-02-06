@@ -32,7 +32,6 @@ dag = DAG(
 list_bucket_contents = S3ListOperator(
     bucket=hack_the_future_s3_bucket_name,
     task_id='list_s3_bucket_contents',
-    aws_conn_id='aws_temp_credentials',  # Use a different connection ID for temporary credentials
     dag=dag
 )
 
