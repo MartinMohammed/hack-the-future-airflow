@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.dummy import DummyOperator
-from dags.operators.aws_lambda_trigger_operator import AwsLambdaTriggerOperator
+from operators.aws_lambda_trigger_operator import AwsLambdaTriggerOperator
 
 default_args = {
     'owner': 'airflow',
