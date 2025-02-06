@@ -74,7 +74,7 @@ class AwsLambdaTriggerOperator(BaseOperator):
         self.log.info("Lambda function invoked. Raw response: %s", response)
         
         # Check for a success status code
-        if response.get("statusCode") != 200:
+        if response.get("StatusCode") != 200:
             raise Exception("Lambda invocation failed with status code: {}".format(response.get("StatusCode")))
         
         # Read and decode the response payload to avoid returning unserializable objects.
